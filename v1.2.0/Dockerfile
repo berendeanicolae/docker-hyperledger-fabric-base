@@ -75,14 +75,19 @@ RUN go get github.com/golang/protobuf/protoc-gen-go \
 
 # Clone the Hyperledger Fabric code and cp sample config files
 RUN cd $GOPATH/src/github.com/hyperledger \
-        && wget https://github.com/hyperledger/fabric/archive/v${PROJECT_VERSION}.zip \
-        && unzip v${PROJECT_VERSION}.zip \
-        && rm v${PROJECT_VERSION}.zip \
-        && mv fabric-${PROJECT_VERSION} fabric \
+        && git clone https://github.com/berendeanicolae/fabric.git \
+        && cd fabric \
+        && git checkout chaincodetimeout \
+        # && wget https://github.com/hyperledger/fabric/archive/v${PROJECT_VERSION}.zip \
+        # && unzip v${PROJECT_VERSION}.zip \
+        # && rm v${PROJECT_VERSION}.zip \
+        # && mv fabric-${PROJECT_VERSION} fabric \
         && cp $FABRIC_ROOT/devenv/limits.conf /etc/security/limits.conf \
         && cp -r $FABRIC_ROOT/sampleconfig/* $FABRIC_CFG_PATH/ \
         && cp $FABRIC_ROOT/examples/e2e_cli/configtx.yaml $FABRIC_CFG_PATH/ \
         && cp $FABRIC_ROOT/examples/e2e_cli/crypto-config.yaml $FABRIC_CFG_PATH/
+
+# Patch the message structure
 
 # install configtxgen, cryptogen and configtxlator
 RUN cd $FABRIC_ROOT/ \
