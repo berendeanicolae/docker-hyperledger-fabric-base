@@ -88,6 +88,13 @@ RUN cd $GOPATH/src/github.com/hyperledger \
         && cp $FABRIC_ROOT/examples/e2e_cli/crypto-config.yaml $FABRIC_CFG_PATH/
 
 # Patch the message structure
+RUN curl -sSL https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protoc-3.6.1-linux-x86_64.zip > protoc.zip \
+    && unzip protoc.zip -d /home/protoc \
+    && cd /home/protoc/bin \
+    && go get github.com/golang/protobuf/protoc-gen-go \
+    && go build github.com/golang/protobuf/protoc-gen-go \
+    && ./protoc --proto_path=$GOPATH/src/github.com/berendeanicolae/fabric/protos --go_out=$GOPATH/src $GOPATH/src/github.com/berendeanicolae/fabric/protos/gossip/message.proto
+
 
 # install configtxgen, cryptogen and configtxlator
 RUN cd $FABRIC_ROOT/ \
