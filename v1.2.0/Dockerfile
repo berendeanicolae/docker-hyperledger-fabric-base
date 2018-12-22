@@ -77,7 +77,7 @@ RUN go get github.com/golang/protobuf/protoc-gen-go \
 RUN cd $GOPATH/src/github.com/hyperledger \
         && git clone https://github.com/berendeanicolae/fabric.git \
         && cd fabric \
-        && git checkout chaincodetimeout \
+        && git checkout thesis \
         # && wget https://github.com/hyperledger/fabric/archive/v${PROJECT_VERSION}.zip \
         # && unzip v${PROJECT_VERSION}.zip \
         # && rm v${PROJECT_VERSION}.zip \
@@ -88,12 +88,19 @@ RUN cd $GOPATH/src/github.com/hyperledger \
         && cp $FABRIC_ROOT/examples/e2e_cli/crypto-config.yaml $FABRIC_CFG_PATH/
 
 # Patch the message structure
-RUN curl -sSL https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protoc-3.6.1-linux-x86_64.zip > protoc.zip \
-    && unzip protoc.zip -d /home/protoc \
-    && cd /home/protoc/bin \
-    && go get github.com/golang/protobuf/protoc-gen-go \
-    && go build github.com/golang/protobuf/protoc-gen-go \
-    && ./protoc --proto_path=$GOPATH/src/github.com/berendeanicolae/fabric/protos --go_out=$GOPATH/src $GOPATH/src/github.com/berendeanicolae/fabric/protos/gossip/message.proto
+RUN cd ~ \
+    && curl -sSL https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protoc-3.6.1-linux-x86_64.zip --output protoc.zip \
+    && unzip protoc.zip -d ~/protoc \
+    && mkdir $GOPATH/src/github.com/golang \
+    && curl -sSL https://codeload.github.com/golang/protobuf/zip/v1.0.0 --output $GOPATH/src/github.com/golang/protobuf.zip \
+    && unzip $GOPATH/src/github.com/golang/protobuf.zip -d $GOPATH/src/github.com/golang \
+    && mv $GOPATH/src/github.com/golang/protobuf-1.0.0 $GOPATH/src/github.com/golang/protobuf \
+    && cd ~/protoc/bin \
+    && go install github.com/golang/protobuf/protoc-gen-go \
+    && ./protoc --proto_path=$GOPATH/src/github.com/hyperledger/fabric/protos --go_out=plugins=grpc:$GOPATH/src $GOPATH/src/github.com/hyperledger/fabric/protos/gossip/message.proto
+    && cd ~ \
+    && rm -r protoc \
+    && rm protoc.zip
 
 
 # install configtxgen, cryptogen and configtxlator
