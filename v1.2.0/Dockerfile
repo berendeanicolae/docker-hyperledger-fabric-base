@@ -97,7 +97,7 @@ RUN cd ~ \
     && mv $GOPATH/src/github.com/golang/protobuf-1.0.0 $GOPATH/src/github.com/golang/protobuf \
     && cd ~/protoc/bin \
     && go install github.com/golang/protobuf/protoc-gen-go \
-    && ./protoc --proto_path=$GOPATH/src/github.com/hyperledger/fabric/protos --go_out=plugins=grpc:$GOPATH/src $GOPATH/src/github.com/hyperledger/fabric/protos/gossip/message.proto
+    && ./protoc --proto_path=$GOPATH/src/github.com/hyperledger/fabric/protos --go_out=plugins=grpc:$GOPATH/src $GOPATH/src/github.com/hyperledger/fabric/protos/gossip/message.proto \
     && cd ~ \
     && rm -r protoc \
     && rm protoc.zip
