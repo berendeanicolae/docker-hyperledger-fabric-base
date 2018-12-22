@@ -91,7 +91,7 @@ RUN cd $GOPATH/src/github.com/hyperledger \
 RUN cd ~ \
     && curl -sSL https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protoc-3.6.1-linux-x86_64.zip --output protoc.zip \
     && unzip protoc.zip -d ~/protoc \
-    && mkdir $GOPATH/src/github.com/golang \
+    && mkdir -p $GOPATH/src/github.com/golang \
     && curl -sSL https://codeload.github.com/golang/protobuf/zip/v1.0.0 --output $GOPATH/src/github.com/golang/protobuf.zip \
     && unzip $GOPATH/src/github.com/golang/protobuf.zip -d $GOPATH/src/github.com/golang \
     && mv $GOPATH/src/github.com/golang/protobuf-1.0.0 $GOPATH/src/github.com/golang/protobuf \
