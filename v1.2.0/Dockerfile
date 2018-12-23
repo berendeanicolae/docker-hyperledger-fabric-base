@@ -62,8 +62,7 @@ RUN curl -fL https://nexus.hyperledger.org/content/repositories/releases/org/hyp
         && chmod a+x /usr/local/bin/chaintool
 
 # install gotools
-RUN go get github.com/golang/protobuf/protoc-gen-go \
-        && go get github.com/maxbrunsfeld/counterfeiter \
+RUN go get github.com/maxbrunsfeld/counterfeiter \
         && go get github.com/axw/gocov/... \
         && go get github.com/AlekSi/gocov-xml \
         && go get golang.org/x/tools/cmd/goimports \
